@@ -1,10 +1,10 @@
-package lsg.Helpers;
+package lsg.helpers;
 
 import java.util.Random;
 
 public class Dice {
-    protected int faces;
-    protected Random random;
+    private int faces;
+    private Random random;
 
     public Dice(int faces) {
         this.faces = faces;
@@ -15,18 +15,6 @@ public class Dice {
         int rolled_number = 0;
         rolled_number =  random.nextInt((faces)+1);
         return rolled_number;
-    }
-
-    @Override
-    public String toString() {
-        return "Dice{" +
-                "faces=" + faces +
-                ", random=" + random +
-                '}';
-    }
-
-    public void printStats(){
-        System.out.println(this);
     }
 
     public static void main(String[] args) {
