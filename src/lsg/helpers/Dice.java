@@ -7,14 +7,12 @@ public class Dice {
     private Random random;
 
     public Dice(int faces) {
+        random = new Random();
         this.faces = faces;
     }
 
     public int roll(){
-        random = new Random();
-        int rolled_number = 0;
-        rolled_number =  random.nextInt((faces)+1);
-        return rolled_number;
+        return random.nextInt(faces);
     }
 
     public static void main(String[] args) {

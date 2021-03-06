@@ -12,7 +12,7 @@ public class Character {
     protected Dice dice;
 
     public Character(){
-        new Dice(101);
+        dice = new Dice(101);
     }
 
     public String getName() {
@@ -60,9 +60,9 @@ public class Character {
     public int attackWith(Weapon weapon){
         int damage = 0;
         if(!weapon.isBroken() && getStamina()> 0){
-            int minDamage = weapon.getMinDamage(); // 5
-            int maxDamage = weapon.getMaxDamage(); // 10
-            int additionalDamage = dice.roll(); // dice 6
+            int minDamage = weapon.getMinDamage();
+            int maxDamage = weapon.getMaxDamage();
+            int additionalDamage = dice.roll();
 
             if((additionalDamage+minDamage)>maxDamage){
                 damage=maxDamage;
@@ -72,12 +72,13 @@ public class Character {
             }
 
             weapon.use();
-            setStamina(stamina-weapon.getStamCost());
 
             if (getStamina() < weapon.getStamCost()){
-                int reduction = weapon.getStamCost()-getStamina();
-                damage = damage - reduction;
+                damage=Math.round(damage*((float)this.stamina/weapon.getStamCost()));
                 setStamina(0);
+            }
+            else{
+                setStamina(getStamina()-weapon.getStamCost());
             }
         }
         return damage;
