@@ -36,6 +36,5 @@ public class LearningSoulsGame {
             int damage = m3.attack();
             System.out.println("attaque avec "+ h.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
         }
-        //test commit git ssh
     }
 }
