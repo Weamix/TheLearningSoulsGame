@@ -93,7 +93,7 @@ public class Character {
     }
 
     public int getHitWith(int value){
-        value = getLife() < value ? getLife() : value;
+        value = Math.min(getLife(), value);
         setLife(getLife()-value);
         return value;
     }

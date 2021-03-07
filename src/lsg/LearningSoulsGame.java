@@ -2,11 +2,58 @@ package lsg;
 
 import lsg.characters.Hero;
 import lsg.characters.Monster;
+import lsg.characters.Character;
+import lsg.weapons.Claw;
 import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
+import java.util.Scanner;
+
 public class LearningSoulsGame {
+    private Hero hero;
+    private Monster monster;
+    private Scanner scanner;
+
+    private void refresh() {
+        hero.printStats();
+        monster.printStats();
+    }
+
+    private void fight1vs1(){
+        init();
+        scanner = new Scanner(System.in);
+        refresh();
+        Character attacker = this.hero;
+        Character victim = this.monster;
+        Character turn;
+        while(attacker.isAlive() && victim.isAlive()){
+            System.out.println("Hit enter key for next move > ");
+            scanner.nextLine();
+            int damage = attacker.attack();
+            System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+            refresh();
+            turn=attacker;
+            attacker=victim;
+            victim=turn;
+
+        }
+        System.out.println(String.format("--- %s WINS !!! ---", (hero.isAlive() ? hero.getName() : monster.getName())));
+    }
+
+    private void init(){
+        monster = new Monster();
+        hero = new Hero();
+        Weapon claw = new Claw();
+        Weapon sword = new Sword();
+        monster.setWeapon(claw);
+        hero.setWeapon(sword);
+    }
+
+    private void play_v1(){
+        fight1vs1();
+    }
+
     public static void main(String[] args) {
         Hero h = new Hero();
         h.printStats();
@@ -52,11 +99,16 @@ public class LearningSoulsGame {
         while(zombie.isAlive() && rick.getStamina() > 0){
             rick.printStats();
             zombie.printStats();
-            System.out.println("!!!" +rick.getName()+" attack " +zombie.getName()+" with " +rick.getWeapon().getName()+" (" +rick.attack()+") !!! -> Effective DMG:000" +zombie.getHitWith(rick.attack())+"PV");
+            int damage = rick.attack();
+            System.out.println("!!!" +rick.getName()+" attack " +zombie.getName()+" with " +rick.getWeapon().getName()+" (" + damage +") !!! -> Effective DMG:000" +zombie.getHitWith(damage)+"PV");
         }
         if (!zombie.isAlive()){
             rick.printStats();
             zombie.printStats();
         }
+
+        System.out.print("---------------------------------------- GAME ---------------------------------------- \n");
+        LearningSoulsGame game = new LearningSoulsGame();
+        game.fight1vs1();
     }
 }
