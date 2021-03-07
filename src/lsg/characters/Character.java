@@ -62,11 +62,12 @@ public class Character {
 
     public boolean isAlive(){ return this.life>0; }
 
-    private int attackWith(Weapon weapon){
+    public int attackWith(Weapon weapon){
+        //TODO fix this method
         int damage = 0;
-        if(!w.isBroken() && getStamina()> 0){
-            int minDamage = w.getMinDamage();
-            int maxDamage = w.getMaxDamage();
+        if(!weapon.isBroken() && getStamina()> 0){
+            int minDamage = weapon.getMinDamage();
+            int maxDamage = weapon.getMaxDamage();
             int additionalDamage = dice.roll();
 
             if((additionalDamage+minDamage)>maxDamage){
@@ -76,26 +77,26 @@ public class Character {
                 damage = minDamage + additionalDamage;
             }
 
-            w.use();
-           //setStamina(getStamina()-weapon.getStamCost());
-            float stamina_ratio = (float) getStamina() / w.getStamCost();
-            if(stamina_ratio > 1) {
-                stamina_ratio = 1;
-                //setStamina(0);
-            }
-            /*if (w.getStamCost() > getStamina()){
-                int reduction = w.getStamCost()-getStamina();
+            weapon.use();
+            setStamina(stamina-weapon.getStamCost());
+
+            if (getStamina() < weapon.getStamCost()){
+                int reduction = weapon.getStamCost()-getStamina();
                 damage = damage - reduction;
                 setStamina(0);
-            }*/
-            setStamina(getStamina() - w.getStamCost());
-            damage = Math.round(damage * stamina_ratio);
+            }
         }
         return damage;
     }
 
     public int attack(){
         return attackWith(this.w);
+    }
+
+    public int getHitWith(int value){
+        value = getLife() < value ? getLife() : value;
+        setLife(getLife()-value);
+        return value;
     }
 
     @Override

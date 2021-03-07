@@ -14,4 +14,3 @@ public class Hero extends Character{
         this( "Gregooninator");
     }
 }
-

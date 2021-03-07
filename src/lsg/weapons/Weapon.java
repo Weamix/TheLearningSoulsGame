@@ -1,7 +1,5 @@
 package lsg.weapons;
 
-import lsg.characters.Hero;
-
 public class Weapon {
     protected String name;
     protected int minDamage;
@@ -25,9 +23,7 @@ public class Weapon {
         return minDamage;
     }
 
-    public int getMaxDamage() {
-        return maxDamage;
-    }
+    public int getMaxDamage() { return maxDamage; }
 
     public int getStamCost() {
         return stamCost;
@@ -42,12 +38,10 @@ public class Weapon {
     }
 
     public void use(){
-        durability=durability--;
+        durability=durability-1;
     }
 
-    public boolean isBroken(){
-        return this.durability<=0;
-    }
+    public boolean isBroken(){ return this.durability<=0; }
 
     @Override
     public String toString() {

@@ -16,4 +16,3 @@ public class Monster extends Character{
         this("Monster_"+INSTANCES_COUNT+1);
     }
 }
-
