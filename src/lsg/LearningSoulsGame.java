@@ -26,7 +26,7 @@ public class LearningSoulsGame {
             int damage = h.attack();
             System.out.println("attaque avec "+ sword.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
         }
-        if (h.getStamina() == 0){
+        if (h.isAlive()){
             h.printStats();
         }
 
