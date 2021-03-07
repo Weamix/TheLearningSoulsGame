@@ -3,6 +3,7 @@ package lsg;
 import lsg.characters.Hero;
 import lsg.characters.Monster;
 import lsg.weapons.Sword;
+import lsg.weapons.Weapon;
 
 public class LearningSoulsGame {
     public static void main(String[] args) {
@@ -15,13 +16,25 @@ public class LearningSoulsGame {
             Monster m = new Monster();
             m.printStats();
         }
+
+        System.out.print("----------------------------------------------------------------------------------------\n");
+        for (int i=0;i<=5;i++){
+            Weapon sword = new Sword();
+            h.printStats();
+            h.setWeapon(sword);
+            int damage = h.attack();
+            System.out.println("attaque avec "+ h.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
+        }
+
         System.out.print("----------------------------------------------------------------------------------------\n");
 
-        Sword s = new Sword();
+        Monster m3 = new Monster();
         for (int i=0;i<=5;i++){
-            h.printStats();
-            int damage = h.attackWith(s);
-            System.out.println("attaque avec "+ h.getName() +" (min:"+ s.getMinDamage()+ " max: " + s.getMaxDamage() + " stam:" + s.getStamCost() + " dur:"+ s.getDurability()+") > "+ damage);
+            Weapon sword = new Sword();
+            m3.printStats();
+            m3.setWeapon(sword);
+            int damage = m3.attack();
+            System.out.println("attaque avec "+ h.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
         }
     }
 }

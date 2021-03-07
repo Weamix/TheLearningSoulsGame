@@ -4,12 +4,13 @@ import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
 public class Character {
-    protected String name;
-    protected int life;
-    protected int maxLife;
-    protected int stamina;
-    protected int maxStamina;
-    protected Dice dice;
+    private String name;
+    private int life;
+    private int maxLife;
+    private int stamina;
+    private int maxStamina;
+    private Dice dice;
+    private Weapon w;
 
     public Character(){
         dice = new Dice(101);
@@ -35,6 +36,8 @@ public class Character {
         return maxStamina;
     }
 
+    public Weapon getWeapon() { return w; }
+
     void setName(String name) {
         this.name = name;
     }
@@ -55,13 +58,15 @@ public class Character {
         this.maxStamina = maxStamina;
     }
 
+    public void setWeapon(Weapon w) { this.w = w; }
+
     public boolean isAlive(){ return this.life>0; }
 
-    public int attackWith(Weapon weapon){
+    private int attackWith(Weapon weapon){
         int damage = 0;
-        if(!weapon.isBroken() && getStamina()> 0){
-            int minDamage = weapon.getMinDamage();
-            int maxDamage = weapon.getMaxDamage();
+        if(!w.isBroken() && getStamina()> 0){
+            int minDamage = w.getMinDamage();
+            int maxDamage = w.getMaxDamage();
             int additionalDamage = dice.roll();
 
             if((additionalDamage+minDamage)>maxDamage){
@@ -71,23 +76,31 @@ public class Character {
                 damage = minDamage + additionalDamage;
             }
 
-            weapon.use();
-
-            if (getStamina() < weapon.getStamCost()){
-                damage=Math.round(damage*((float)this.stamina/weapon.getStamCost()));
+            w.use();
+           //setStamina(getStamina()-weapon.getStamCost());
+            float stamina_ratio = (float) getStamina() / w.getStamCost();
+            if(stamina_ratio > 1) {
+                stamina_ratio = 1;
+                //setStamina(0);
+            }
+            /*if (w.getStamCost() > getStamina()){
+                int reduction = w.getStamCost()-getStamina();
+                damage = damage - reduction;
                 setStamina(0);
-            }
-            else{
-                setStamina(getStamina()-weapon.getStamCost());
-            }
+            }*/
+            setStamina(getStamina() - w.getStamCost());
+            damage = Math.round(damage * stamina_ratio);
         }
         return damage;
+    }
+
+    public int attack(){
+        return attackWith(this.w);
     }
 
     @Override
     public String toString() {
         return String.format("%-20s %-20s %-20s %-20s %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
-
     }
 
     public void printStats(){

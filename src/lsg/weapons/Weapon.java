@@ -51,8 +51,7 @@ public class Weapon {
 
     @Override
     public String toString() {
-        //return String.format("%20s %20s %20s %20s %20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),"dur:"+getDurability())+")" ;
-        return "attaque avec "+ getName() +" (min:"+ getMinDamage()+ " max: " + getMaxDamage() + " stam:" + getStamCost() + " dur:"+getDurability()+")";
+        return String.format("%20s %20s %20s %20s %20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),"dur:"+getDurability())+")" ;
     }
 
     public void printStats(){ System.out.println(this); }
