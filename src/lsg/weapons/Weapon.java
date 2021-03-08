@@ -1,11 +1,11 @@
 package lsg.weapons;
 
 public class Weapon {
-    protected String name;
-    protected int minDamage;
-    protected int maxDamage;
-    protected int stamCost;
-    protected int durability;
+    private String name;
+    private int minDamage;
+    private int maxDamage;
+    private int stamCost;
+    private int durability;
 
     public Weapon(String name, int minDamage, int maxDamage, int stamCost, int durability) {
         this.name = name;

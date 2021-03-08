@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class LearningSoulsGame {
     private Hero hero;
     private Monster monster;
-    private Scanner scanner;
 
     private void refresh() {
         hero.printStats();
@@ -22,7 +21,7 @@ public class LearningSoulsGame {
 
     private void fight1vs1(){
         init();
-        scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         refresh();
         Character attacker = this.hero;
         Character victim = this.monster;
