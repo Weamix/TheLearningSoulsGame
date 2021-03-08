@@ -3,11 +3,11 @@ package lsg.characters;
 public class Hero extends Character{
 
     public Hero(String name) {
-        this.setName(name);
-        this.setMaxStamina(50);
-        this.setMaxLife(100);
-        this.setStamina(this.getMaxStamina());
-        this.setLife(this.getMaxLife());
+        setName(name);
+        setMaxStamina(50);
+        setMaxLife(100);
+        setStamina(this.getMaxStamina());
+        setLife(this.getMaxLife());
     }
 
     public Hero(){

@@ -38,7 +38,7 @@ public class Weapon {
     }
 
     public void use(){
-        durability=durability-1;
+        setDurability(durability-1) ; ;;
     }
 
     public boolean isBroken(){ return this.durability<=0; }

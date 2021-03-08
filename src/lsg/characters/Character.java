@@ -9,12 +9,8 @@ public class Character {
     private int maxLife;
     private int stamina;
     private int maxStamina;
-    private Dice dice;
+    private Dice dice = new Dice(101);
     private Weapon w;
-
-    public Character(){
-        dice = new Dice(101);
-    }
 
     public String getName() {
         return name;
@@ -38,26 +34,26 @@ public class Character {
 
     public Weapon getWeapon() { return w; }
 
-    void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
-    void setLife(int life) {
+    protected void setLife(int life) {
         this.life = life;
     }
 
-    void setMaxLife(int maxLife) {
+    protected void setMaxLife(int maxLife) {
         this.maxLife = maxLife;
     }
 
-    void setStamina(int stamina) {
+    protected void setStamina(int stamina) {
         if(stamina<0){
             stamina=0;
         }
         this.stamina = stamina;
     }
 
-    void setMaxStamina(int maxStamina) {
+    protected void setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
     }
 
@@ -65,19 +61,14 @@ public class Character {
 
     public boolean isAlive(){ return this.life>0; }
 
-    public int attackWith(Weapon weapon){
+    private int attackWith(Weapon weapon){
         int damage = 0;
         if(!weapon.isBroken() && getStamina()> 0){
             int minDamage = weapon.getMinDamage();
             int maxDamage = weapon.getMaxDamage();
             float additionalDamage = (float)dice.roll()/100;
 
-            if((additionalDamage+minDamage)>maxDamage){
-                damage=maxDamage;
-            }
-            else{
-                damage = Math.round((minDamage + additionalDamage * (maxDamage - minDamage)) * Math.min((float) stamina / weapon.getStamCost(), 1));
-            }
+            damage = Math.round((minDamage + additionalDamage * (maxDamage - minDamage)) * Math.min((float) stamina / weapon.getStamCost(), 1));
 
             weapon.use();
             float stamina_ratio = (float) getStamina() / w.getStamCost();
