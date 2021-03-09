@@ -68,7 +68,8 @@ public class Character {
             int maxDamage = weapon.getMaxDamage();
             float additionalDamage = (float)dice.roll()/100;
 
-            damage = Math.round((minDamage + additionalDamage * (maxDamage - minDamage)) * Math.min((float) stamina / weapon.getStamCost(), 1));
+            //damage = Math.round((minDamage + additionalDamage * (maxDamage - minDamage)) * Math.min((float) stamina / weapon.getStamCost(), 1));
+            damage = minDamage + Math.round((maxDamage-minDamage)*additionalDamage);
 
             weapon.use();
             float stamina_ratio = (float) getStamina() / w.getStamCost();
