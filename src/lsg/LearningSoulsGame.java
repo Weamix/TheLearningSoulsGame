@@ -108,6 +108,6 @@ public class LearningSoulsGame {
 
         System.out.print("---------------------------------------- GAME ---------------------------------------- \n");
         LearningSoulsGame game = new LearningSoulsGame();
-        game.fight1vs1();
+        game.play_v1();
     }
 }
