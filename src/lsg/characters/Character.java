@@ -3,6 +3,8 @@ package lsg.characters;
 import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
+import java.util.Locale;
+
 public abstract class Character {
     private String name;
     private int life;
@@ -97,7 +99,7 @@ public abstract class Character {
 
     @Override
     public String toString() {
-        return String.format("%-20s %-20s %-20s %-20s %-20s  %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() ,"PROTECTION :" + computeProtection() , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
+        return String.format("%-20s %-20s %-20s %-20s %-20s  %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() ,"PROTECTION :" + String.format(Locale.US,"%6.2f",computeProtection()) , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
     }
 
     public void printStats(){
