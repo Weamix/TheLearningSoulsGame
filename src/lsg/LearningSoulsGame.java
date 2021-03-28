@@ -1,5 +1,7 @@
 package lsg;
 
+import lsg.armor.BlackWitchVeil;
+import lsg.armor.RingedKnightArmor;
 import lsg.characters.Hero;
 import lsg.characters.Monster;
 import lsg.characters.Character;

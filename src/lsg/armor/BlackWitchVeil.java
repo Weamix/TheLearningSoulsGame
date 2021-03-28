@@ -2,6 +2,6 @@ package lsg.armor;
 
 public class BlackWitchVeil extends ArmorItem {
     public BlackWitchVeil() {
-        super("BlackWitchVeil", 4.6f);
+        super("Black Witch Veil", 4.6f);
     }
 }
