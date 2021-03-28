@@ -1,6 +1,7 @@
 package lsg;
 
 import lsg.armor.BlackWitchVeil;
+import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
 import lsg.characters.Hero;
 import lsg.characters.Monster;
@@ -22,7 +23,6 @@ public class LearningSoulsGame {
     }
 
     private void fight1vs1(){
-        init();
         Scanner scanner = new Scanner(System.in);
         refresh();
         Character attacker = this.hero;
@@ -52,6 +52,18 @@ public class LearningSoulsGame {
     }
 
     private void play_v1(){
+        init();
+        fight1vs1();
+    }
+
+    private void play_v2(){
+        init();
+        BlackWitchVeil blackWitchVeil = new BlackWitchVeil();
+        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
+        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+        hero.setArmor(blackWitchVeil,1);
+        hero.setArmor(ringedKnightArmor,2);
+        hero.setArmor(dragonSlayerLeggings,3);
         fight1vs1();
     }
 
@@ -66,7 +78,7 @@ public class LearningSoulsGame {
             m.printStats();
         }*/
 
-        System.out.print("----------------------------------------------------------------------------------------\n");
+        /*System.out.print("----------------------------------------------------------------------------------------\n");
         Weapon sword = new Sword();
         while(h.getStamina() > 0){
             h.printStats();
@@ -106,10 +118,11 @@ public class LearningSoulsGame {
         if (!zombie.isAlive()){
             rick.printStats();
             zombie.printStats();
-        }
+        }*/
 
         System.out.print("---------------------------------------- GAME ---------------------------------------- \n");
         LearningSoulsGame game = new LearningSoulsGame();
-        game.play_v1();
+        //game.play_v1();
+        game.play_v2();
     }
 }

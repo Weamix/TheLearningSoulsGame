@@ -4,8 +4,6 @@ import lsg.armor.ArmorItem;
 import lsg.armor.BlackWitchVeil;
 import lsg.armor.RingedKnightArmor;
 
-import java.util.Arrays;
-
 public class Hero extends Character{
 
     private static int MAX_ARMOR_PIECES = 3;
@@ -39,18 +37,20 @@ public class Hero extends Character{
     public String armorToString() {
         StringBuilder s = new StringBuilder("ARMOR ");
         for(int i = 0; i<armor.length; i++){
-            if(armor[i]!=null){
-                s.append(String.format(" %s:%s(%s) ", i+1, armor[i].getName(), armor[i].getArmorValue()));
-            }
-            else{
-                s.append(String.format(" %s:%s ", i+1, "empty"));
-            }
+            s.append(String.format(" %s:%s ", i+1, armor[i]!=null ? armor[i].toString() : "empty"));
         }
         return s + "TOTAL :" + getTotalArmor();
     }
 
+    // getArmorItems?
+
     public Hero(){
         this( "Gregooninator");
+    }
+
+    @Override
+    protected float computeProtection() {
+        return getTotalArmor();
     }
 
     public static void main(String[] args) {

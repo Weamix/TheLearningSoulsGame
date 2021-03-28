@@ -24,4 +24,9 @@ public class Monster extends Character{
     public Monster(){
         this("Monster_"+INSTANCES_COUNT+1);
     }
+
+    @Override
+    protected float computeProtection() {
+        return skinThickness;
+    }
 }

@@ -3,7 +3,7 @@ package lsg.characters;
 import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
-public class Character {
+public abstract class Character {
     private String name;
     private int life;
     private int maxLife;
@@ -85,14 +85,19 @@ public class Character {
     }
 
     public int getHitWith(int value){
-        value = Math.min(getLife(), value);
+        float protection = computeProtection();
+        if(protection<100){
+            value = (int) Math.min(getLife(), value*protection/100);
+        }
         setLife(getLife()-value);
         return value;
     }
 
+    protected abstract float computeProtection();
+
     @Override
     public String toString() {
-        return String.format("%-20s %-20s %-20s %-20s %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
+        return String.format("%-20s %-20s %-20s %-20s %-20s  %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() ,"PROTECTION :" + computeProtection() , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
     }
 
     public void printStats(){
