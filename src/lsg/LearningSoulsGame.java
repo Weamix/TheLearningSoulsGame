@@ -3,6 +3,9 @@ package lsg;
 import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
+import lsg.buffs.rings.RingOfDeath;
+import lsg.buffs.rings.RingOfSwords;
+import lsg.buffs.talismans.Talisman;
 import lsg.characters.Hero;
 import lsg.characters.Lycanthrope;
 import lsg.characters.Monster;
@@ -71,7 +74,13 @@ public class LearningSoulsGame {
         init();
         RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
         hero.setArmor(ringedKnightArmor,2);
+        RingOfDeath ringOfDeath = new RingOfDeath();
+        hero.setRing(ringOfDeath,1);
+        RingOfSwords ringOfSwords = new RingOfSwords();
+        hero.setRing(ringOfSwords,2);
         monster = new Lycanthrope();
+        Talisman talisman = new Talisman("Renault",20,19,1);
+        monster.setTalisman(talisman);
         fight1vs1();
     }
 

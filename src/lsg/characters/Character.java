@@ -75,7 +75,7 @@ public abstract class Character {
             weapon.use();
             float stamina_ratio = (float) getStamina() / w.getStamCost();
             if(stamina_ratio > 1) stamina_ratio = 1;
-            damage = Math.round(damage * stamina_ratio);
+            damage = Math.round(damage * stamina_ratio * computeBuff()/100);
             setStamina(getStamina() - w.getStamCost());
         }
         return damage;
@@ -95,10 +95,11 @@ public abstract class Character {
     }
 
     protected abstract float computeProtection();
+    protected abstract float computeBuff();
 
     @Override
     public String toString() {
-        return String.format("%-20s %-20s %-20s %-20s %-20s  %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() ,"PROTECTION :" + String.format(Locale.US,"%6.2f",computeProtection()) , (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
+        return String.format("%-20s %-20s %-20s %-20s %-20s %-20s  %-20s","["+getClass().getSimpleName()+"]", getName(),"LIFE: " + getLife()  , "STAMINA: " + getStamina() ,"PROTECTION :" + String.format(Locale.US,"%6.2f",computeProtection()) , "BUFF :" + String.format(Locale.US,"%6.2f",computeBuff()), (isAlive() ? "(ALIVE)" : "(DEAD)")) ;
     }
 
     public void printStats(){
