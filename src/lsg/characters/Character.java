@@ -11,7 +11,7 @@ public abstract class Character {
     private int maxLife;
     private int stamina;
     private int maxStamina;
-    private Dice dice = new Dice(101);
+    private final Dice dice = new Dice(101);
     private Weapon w;
 
     public String getName() {
@@ -70,7 +70,6 @@ public abstract class Character {
             int maxDamage = weapon.getMaxDamage();
             float additionalDamage = (float)dice.roll()/100;
 
-            //damage = Math.round((minDamage + additionalDamage * (maxDamage - minDamage)) * Math.min((float) stamina / weapon.getStamCost(), 1));
             damage = minDamage + Math.round((maxDamage-minDamage)*additionalDamage);
 
             weapon.use();

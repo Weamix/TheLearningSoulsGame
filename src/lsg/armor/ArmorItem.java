@@ -1,8 +1,8 @@
 package lsg.armor;
 
 public class ArmorItem {
-    private String name;
-    private float armorValue;
+    private final String name;
+    private final float armorValue;
 
     public ArmorItem(String name, float armorValue) {
         this.name = name;
@@ -19,6 +19,6 @@ public class ArmorItem {
 
     @Override
     public String toString() {
-        return this.name+"("+this.armorValue+")";
+        return getName()+ "("+getArmorValue()+")";
     }
 }

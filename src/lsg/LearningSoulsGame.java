@@ -4,10 +4,10 @@ import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
 import lsg.characters.Hero;
+import lsg.characters.Lycanthrope;
 import lsg.characters.Monster;
 import lsg.characters.Character;
 import lsg.weapons.Claw;
-import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
@@ -67,6 +67,14 @@ public class LearningSoulsGame {
         fight1vs1();
     }
 
+    private void play_v3(){
+        init();
+        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
+        hero.setArmor(ringedKnightArmor,2);
+        monster = new Lycanthrope();
+        fight1vs1();
+    }
+
     public static void main(String[] args) {
         Hero h = new Hero();
         h.printStats();
@@ -123,6 +131,7 @@ public class LearningSoulsGame {
         System.out.print("---------------------------------------- GAME ---------------------------------------- \n");
         LearningSoulsGame game = new LearningSoulsGame();
         //game.play_v1();
-        game.play_v2();
+        //game.play_v2();
+        game.play_v3();
     }
 }

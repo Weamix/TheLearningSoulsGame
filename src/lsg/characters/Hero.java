@@ -6,8 +6,8 @@ import lsg.armor.RingedKnightArmor;
 
 public class Hero extends Character{
 
-    private static int MAX_ARMOR_PIECES = 3;
-    private ArmorItem armor[];
+    private static final int MAX_ARMOR_PIECES = 3;
+    private final ArmorItem[] armor;
 
     public Hero(String name) {
         armor = new ArmorItem[MAX_ARMOR_PIECES];
@@ -26,9 +26,9 @@ public class Hero extends Character{
 
     public float getTotalArmor(){
         float sum = 0;
-        for(int i = 0; i<armor.length; i++){
-            if(armor[i]!=null){
-                sum = sum + armor[i].getArmorValue();
+        for (ArmorItem armorItem : armor) {
+            if (armorItem != null) {
+                sum = sum + armorItem.getArmorValue();
             }
         }
         return sum;
