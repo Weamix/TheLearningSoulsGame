@@ -75,7 +75,9 @@ public abstract class Character {
             weapon.use();
             float stamina_ratio = (float) getStamina() / w.getStamCost();
             if(stamina_ratio > 1) stamina_ratio = 1;
-            damage = Math.round(damage * stamina_ratio * computeBuff()/100);
+            damage = Math.round(damage * stamina_ratio);
+            //damage = Math.round(damage * stamina_ratio * computeBuff()/100);
+            damage += (damage * (computeBuff() / 100));
             setStamina(getStamina() - w.getStamCost());
         }
         return damage;
@@ -86,12 +88,12 @@ public abstract class Character {
     }
 
     public int getHitWith(int value){
-        float protection = computeProtection();
-        if(protection>100){
+        if(computeProtection()>100){
             value = 0;
         }
         else{
-            value = (int) Math.min(getLife(), value*protection/100);
+            //value = (int) Math.min(getLife(), value*computeProtection()/100);
+            value = getLife() < value ? getLife() : Math.round(value - (value * (computeProtection() / 100)));
         }
         setLife(getLife()-value);
         return value;
