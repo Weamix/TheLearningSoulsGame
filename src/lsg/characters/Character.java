@@ -87,7 +87,10 @@ public abstract class Character {
 
     public int getHitWith(int value){
         float protection = computeProtection();
-        if(protection<100){
+        if(protection>100){
+            value = 0;
+        }
+        else{
             value = (int) Math.min(getLife(), value*protection/100);
         }
         setLife(getLife()-value);

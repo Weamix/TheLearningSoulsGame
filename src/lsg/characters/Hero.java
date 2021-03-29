@@ -3,7 +3,6 @@ package lsg.characters;
 import lsg.armor.ArmorItem;
 import lsg.armor.BlackWitchVeil;
 import lsg.armor.RingedKnightArmor;
-import lsg.buffs.BuffItem;
 import lsg.buffs.rings.Ring;
 import lsg.buffs.rings.RingOfSwords;
 
@@ -75,6 +74,7 @@ public class Hero extends Character{
     public void setRing(Ring ring, int slot) {
         if (slot>=1 && slot<=MAX_RINGS){
             this.rings[slot-1]=ring;
+            ring.setHero(this);
         }
     }
 
@@ -93,7 +93,7 @@ public class Hero extends Character{
         for(int i = 0; i<MAX_RINGS; i++){
             s.append(String.format(" %s:%s ", i+1, rings[i]!=null ? rings[i].toString() : "empty"));
         }
-        return s + "TOTAL :" + getTotalRings();
+        return s + "TOTAL :" + computeBuff();
     }
 
     // abstract character

@@ -79,7 +79,7 @@ public class LearningSoulsGame {
         RingOfSwords ringOfSwords = new RingOfSwords();
         hero.setRing(ringOfSwords,2);
         monster = new Lycanthrope();
-        Talisman talisman = new Talisman("Renault",20,19,1);
+        Talisman talisman = new Talisman("Renault",20,1,2);
         monster.setTalisman(talisman);
         fight1vs1();
     }
