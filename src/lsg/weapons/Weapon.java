@@ -7,6 +7,8 @@ public class Weapon {
     private int stamCost;
     private int durability;
 
+    public static  final String DURABILITY_STAT_STRING = "dur :";
+
     public Weapon(String name, int minDamage, int maxDamage, int stamCost, int durability) {
         this.name = name;
         this.minDamage = minDamage;
@@ -45,7 +47,7 @@ public class Weapon {
 
     @Override
     public String toString() {
-        return String.format("%20s %20s %20s %20s %20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),"dur:"+getDurability())+")" ;
+        return String.format("%20s %20s %20s %20s %20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),DURABILITY_STAT_STRING +getDurability())+")" ;
     }
 
     public void printStats(){ System.out.println(this); }

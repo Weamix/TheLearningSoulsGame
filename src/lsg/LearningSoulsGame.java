@@ -10,10 +10,14 @@ import lsg.characters.Hero;
 import lsg.characters.Lycanthrope;
 import lsg.characters.Monster;
 import lsg.characters.Character;
+import lsg.consumables.Consumable;
+import lsg.consumables.MenuBestOfV4;
+import lsg.consumables.drinks.Coffee;
 import lsg.weapons.Claw;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class LearningSoulsGame {
@@ -40,6 +44,9 @@ public class LearningSoulsGame {
             turn=attacker;
             attacker=victim;
             victim=turn;
+
+            Coffee coffee = new Coffee();
+            attacker.use(coffee);
 
         }
         System.out.println(String.format("--- %s WINS !!! ---", (hero.isAlive() ? hero.getName() : monster.getName())));
@@ -82,6 +89,29 @@ public class LearningSoulsGame {
         Talisman talisman = new Talisman("Renault",20,1,2);
         monster.setTalisman(talisman);
         fight1vs1();
+    }
+
+    private void createExhaustedHero(){
+        Hero h = new Hero();
+        h.getHitWith(99);
+        Weapon grosseArme = new Weapon("Grosse arme",0,0,1000,100);
+        h.setWeapon(grosseArme);
+        h.attack();
+        System.out.println("Created exhausted hero : ");
+        h.printStats();
+
+    }
+
+    private void aTable(){
+        Hero h = new Hero();
+        MenuBestOfV4 menuBestOfV4 = new MenuBestOfV4();
+        Iterator it = menuBestOfV4.iterator();
+        while (it.hasNext()){
+            Consumable consumable = (Consumable) it.next();
+            h.use(consumable);
+            System.out.println(h.toString());
+            System.out.println("Apres utilisation : "+consumable.toString());
+        }
     }
 
     public static void main(String[] args) {
@@ -141,6 +171,8 @@ public class LearningSoulsGame {
         LearningSoulsGame game = new LearningSoulsGame();
         //game.play_v1();
         //game.play_v2();
-        game.play_v3();
+        //game.play_v3();
+        game.createExhaustedHero();
+        game.aTable();
     }
 }
