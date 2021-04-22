@@ -30,9 +30,9 @@ public class LearningSoulsGame {
 
     private void refresh() {
         hero.printStats();
-        monster.printStats();
         System.out.println(BULLET_POINT+hero.getWeapon().toString());
-        System.out.println(BULLET_POINT+hero.getConsumable().toString());
+        System.out.println(BULLET_POINT+hero.getConsumable().toString()+"\n");
+        monster.printStats();
     }
 
     private void fight1vs1(){

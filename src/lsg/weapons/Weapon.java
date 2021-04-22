@@ -47,7 +47,7 @@ public class Weapon {
 
     public boolean isBroken(){ return this.durability<=0; }
 
-    public void repairWeaponWith(RepairKit repairKit){
+    public void repairWith(RepairKit repairKit){
         int value = repairKit.use();
         setDurability(getDurability()+value);
     }

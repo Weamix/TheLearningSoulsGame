@@ -145,9 +145,9 @@ public abstract class Character {
         }
     }
 
-    private void repairWith(RepairKit repairKit){
+    private void repairWeaponWith(RepairKit repairKit){
         System.out.println(name+" repairs " + weapon.toString() +" with " + repairKit);
-        weapon.repairWeaponWith(repairKit);
+        weapon.repairWith(repairKit);
     }
 
     public void use(Consumable consumable){
@@ -158,7 +158,7 @@ public abstract class Character {
             eat((Food)consumable);
         }
         else if (consumable instanceof RepairKit){
-            repairWith((RepairKit) consumable);
+            repairWeaponWith((RepairKit) consumable);
         }
     }
 
