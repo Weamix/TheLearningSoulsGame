@@ -3,6 +3,7 @@ package lsg.characters;
 import lsg.consumables.Consumable;
 import lsg.consumables.drinks.Drink;
 import lsg.consumables.food.Food;
+import lsg.consumables.repair.RepairKit;
 import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
@@ -15,7 +16,8 @@ public abstract class Character {
     private int stamina;
     private int maxStamina;
     private final Dice dice = new Dice(101);
-    private Weapon w;
+    private Weapon weapon;
+    private Consumable consumable;
 
     public static final String LIFE_STAT_STRING = "life :";
     public static  final String STAM_STAT_STRING = "stamina :";
@@ -43,14 +45,18 @@ public abstract class Character {
         return maxStamina;
     }
 
-    public Weapon getWeapon() { return w; }
+    public Weapon getWeapon() { return weapon; }
 
     protected void setName(String name) {
         this.name = name;
     }
 
     protected void setLife(int life) {
-        this.life = life;
+        if(life>getMaxLife()){
+            this.life=getMaxLife();
+        }else{
+            this.life = life;
+        }
     }
 
     protected void setMaxLife(int maxLife) {
@@ -68,7 +74,15 @@ public abstract class Character {
         this.maxStamina = maxStamina;
     }
 
-    public void setWeapon(Weapon w) { this.w = w; }
+    public void setWeapon(Weapon w) { this.weapon = w; }
+
+    public Consumable getConsumable() {
+        return consumable;
+    }
+
+    public void setConsumable(Consumable consumable) {
+        this.consumable = consumable;
+    }
 
     public boolean isAlive(){ return this.life>0; }
 
@@ -82,17 +96,17 @@ public abstract class Character {
             damage = minDamage + Math.round((maxDamage-minDamage)*additionalDamage);
 
             weapon.use();
-            float stamina_ratio = (float) getStamina() / w.getStamCost();
+            float stamina_ratio = (float) getStamina() / this.weapon.getStamCost();
             if(stamina_ratio > 1) stamina_ratio = 1;
             damage = Math.round(damage * stamina_ratio);
             damage += (damage * (computeBuff() / 100));
-            setStamina(getStamina() - w.getStamCost());
+            setStamina(getStamina() - this.weapon.getStamCost());
         }
         return damage;
     }
 
     public int attack(){
-        return attackWith(this.w);
+        return attackWith(this.weapon);
     }
 
     public int getHitWith(int value){
@@ -112,8 +126,8 @@ public abstract class Character {
     private void drink(Drink drink){
         System.out.println(name+" drinks " + drink.toString());
         int capacity = drink.use();
-        if(drink.use() < getMaxStamina()){
-            setStamina(capacity);
+        if(capacity < getMaxStamina()){
+            setStamina(getStamina()+capacity);
         }
         else{
             setStamina(getMaxStamina());
@@ -123,12 +137,17 @@ public abstract class Character {
     private void eat(Food food){
         System.out.println(name+" eats " + food.toString());
         int capacity = food.use();
-        if(food.use() < getMaxStamina()){
-            setLife(capacity);
+        if(capacity < getMaxLife()){
+            setLife(getLife()+capacity);
         }
         else{
             setLife(getMaxLife());
         }
+    }
+
+    private void repairWith(RepairKit repairKit){
+        System.out.println(name+" repairs " + weapon.toString() +" with " + repairKit);
+        weapon.repairWeaponWith(repairKit);
     }
 
     public void use(Consumable consumable){
@@ -138,6 +157,13 @@ public abstract class Character {
         else if (consumable instanceof Food){
             eat((Food)consumable);
         }
+        else if (consumable instanceof RepairKit){
+            repairWith((RepairKit) consumable);
+        }
+    }
+
+    public void consume(){
+        use(consumable);
     }
 
     @Override

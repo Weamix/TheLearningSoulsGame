@@ -5,6 +5,7 @@ import lsg.consumables.drinks.Whisky;
 import lsg.consumables.drinks.Wine;
 import lsg.consumables.food.American;
 import lsg.consumables.food.Hamburger;
+import lsg.consumables.repair.RepairKit;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -17,6 +18,7 @@ public class MenuBestOfV4 extends LinkedHashSet<Consumable> {
         add(new American());
         add(new Coffee());
         add(new Whisky());
+        add(new RepairKit());
     }
 
     @Override
@@ -31,7 +33,7 @@ public class MenuBestOfV4 extends LinkedHashSet<Consumable> {
         return m.toString();
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args){
         MenuBestOfV4 menu = new MenuBestOfV4();
         System.out.println(menu.toString());
     }

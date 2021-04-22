@@ -1,5 +1,7 @@
 package lsg.weapons;
 
+import lsg.consumables.repair.RepairKit;
+
 public class Weapon {
     private String name;
     private int minDamage;
@@ -45,9 +47,14 @@ public class Weapon {
 
     public boolean isBroken(){ return this.durability<=0; }
 
+    public void repairWeaponWith(RepairKit repairKit){
+        int value = repairKit.use();
+        setDurability(getDurability()+value);
+    }
+
     @Override
     public String toString() {
-        return String.format("%20s %20s %20s %20s %20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),DURABILITY_STAT_STRING +getDurability())+")" ;
+        return String.format(" %-20s %-20s %-20s %-20s %-20s",getName(),"(min: " + getMinDamage()  , "max: " + getMaxDamage() , "stam:" + getStamCost(),DURABILITY_STAT_STRING +getDurability())+")" ;
     }
 
     public void printStats(){ System.out.println(this); }

@@ -13,10 +13,12 @@ import lsg.characters.Character;
 import lsg.consumables.Consumable;
 import lsg.consumables.MenuBestOfV4;
 import lsg.consumables.drinks.Coffee;
+import lsg.consumables.food.Hamburger;
 import lsg.weapons.Claw;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
+import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -24,9 +26,13 @@ public class LearningSoulsGame {
     private Hero hero;
     private Monster monster;
 
+    public static final String BULLET_POINT = "\u2219";
+
     private void refresh() {
         hero.printStats();
         monster.printStats();
+        System.out.println(BULLET_POINT+hero.getWeapon().toString());
+        System.out.println(BULLET_POINT+hero.getConsumable().toString());
     }
 
     private void fight1vs1(){
@@ -36,17 +42,32 @@ public class LearningSoulsGame {
         Character victim = this.monster;
         Character turn;
         while(attacker.isAlive() && victim.isAlive()){
-            System.out.println("Hit enter key for next move > ");
-            scanner.nextLine();
-            int damage = attacker.attack();
-            System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+            System.out.println();
+            if(attacker instanceof Hero){
+                int action = 0;
+                while (action != 1 && action != 2){
+                    System.out.println("Hero's action for next move (1) attack | (2) consume > ");
+                    action = scanner.nextInt();
+                }
+                if(action ==2){
+                    attacker.consume();
+                } else{
+                    int damage = attacker.attack();
+                    System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+                }
+                System.out.println();
+            }
+            else {
+                int damage = attacker.attack();
+                System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+            }
             refresh();
             turn=attacker;
             attacker=victim;
             victim=turn;
 
-            Coffee coffee = new Coffee();
-            attacker.use(coffee);
+            //Coffee coffee = new Coffee();
+            //attacker.use(coffee);
 
         }
         System.out.println(String.format("--- %s WINS !!! ---", (hero.isAlive() ? hero.getName() : monster.getName())));
@@ -55,10 +76,12 @@ public class LearningSoulsGame {
     private void init(){
         monster = new Monster();
         hero = new Hero();
+        Hamburger hamburger = new Hamburger();
         Weapon claw = new Claw();
         Weapon sword = new Sword();
         monster.setWeapon(claw);
         hero.setWeapon(sword);
+        hero.setConsumable(hamburger);
     }
 
     private void play_v1(){
@@ -104,6 +127,8 @@ public class LearningSoulsGame {
 
     private void aTable(){
         Hero h = new Hero();
+        Weapon grosseArme = new Weapon("Grosse arme",0,0,1000,100);
+        h.setWeapon(grosseArme);
         MenuBestOfV4 menuBestOfV4 = new MenuBestOfV4();
         Iterator it = menuBestOfV4.iterator();
         while (it.hasNext()){
@@ -112,6 +137,7 @@ public class LearningSoulsGame {
             System.out.println(h.toString());
             System.out.println("Apres utilisation : "+consumable.toString());
         }
+        System.out.println(h.getWeapon().toString());
     }
 
     public static void main(String[] args) {
@@ -167,12 +193,12 @@ public class LearningSoulsGame {
             zombie.printStats();
         }*/
 
-        System.out.print("---------------------------------------- GAME ---------------------------------------- \n");
+        System.out.print("---------------------------------------- THE LEARNING SOULS GAME ---------------------------------------- \n");
         LearningSoulsGame game = new LearningSoulsGame();
         //game.play_v1();
         //game.play_v2();
-        //game.play_v3();
-        game.createExhaustedHero();
-        game.aTable();
+        game.play_v3();
+        //game.createExhaustedHero();
+        //game.aTable();
     }
 }
