@@ -3,6 +3,7 @@ package lsg;
 import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
+import lsg.bags.MediumBag;
 import lsg.buffs.rings.RingOfDeath;
 import lsg.buffs.rings.RingOfSwords;
 import lsg.buffs.talismans.Talisman;
@@ -13,12 +14,14 @@ import lsg.characters.Character;
 import lsg.consumables.Consumable;
 import lsg.consumables.MenuBestOfV4;
 import lsg.consumables.drinks.Coffee;
+import lsg.consumables.drinks.Whisky;
 import lsg.consumables.food.Hamburger;
+import lsg.consumables.repair.RepairKit;
 import lsg.weapons.Claw;
+import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
-import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -114,14 +117,64 @@ public class LearningSoulsGame {
         fight1vs1();
     }
 
+    private void test_bag(){
+        /*Hero hero = new Hero();
+        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+        hero.pickUp(dragonSlayerLeggings);
+
+        Hamburger hamburger = new Hamburger();
+        hero.pickUp(hamburger);
+        hero.pullOut(hamburger);
+
+        ShotGun shotGun = new ShotGun();
+        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
+        hero.pickUp(shotGun);
+        hero.pickUp(ringedKnightArmor);
+        hero.printBag();
+
+        MediumBag mediumBag = new MediumBag();
+        hero.setBag(mediumBag);
+
+        hero.equip(shotGun);
+        hero.equip(dragonSlayerLeggings,2);*/
+
+        createExhaustedHero();
+
+        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
+        ShotGun shotGun = new ShotGun();
+        hero.pickUp(dragonSlayerLeggings);
+        hero.pickUp(ringedKnightArmor);
+        hero.pickUp(shotGun);
+        hero.printBag();
+
+        MediumBag mediumBag = new MediumBag();
+
+        hero.setBag(mediumBag);
+        hero.printBag();
+
+        Coffee coffee = new Coffee();
+        Hamburger hamburger = new Hamburger();
+        Whisky whisky = new Whisky();
+        RepairKit repairKit = new RepairKit();
+        RepairKit repairKit1 = new RepairKit();
+        hero.pickUp(coffee);
+        hero.pickUp(hamburger);
+        hero.pickUp(whisky);
+        hero.pickUp(repairKit);
+        hero.pickUp(repairKit1);
+
+        hero.printBag();
+    }
+
     private void createExhaustedHero(){
-        Hero h = new Hero();
-        h.getHitWith(99);
+        this.hero = new Hero();
+        hero.getHitWith(99);
         Weapon grosseArme = new Weapon("Grosse arme",0,0,1000,100);
-        h.setWeapon(grosseArme);
-        h.attack();
+        hero.setWeapon(grosseArme);
+        hero.attack();
         System.out.println("Created exhausted hero : ");
-        h.printStats();
+        hero.printStats();
 
     }
 
@@ -197,8 +250,9 @@ public class LearningSoulsGame {
         LearningSoulsGame game = new LearningSoulsGame();
         //game.play_v1();
         //game.play_v2();
-        game.play_v3();
+        //game.play_v3();
         //game.createExhaustedHero();
         //game.aTable();
+        game.test_bag();
     }
 }

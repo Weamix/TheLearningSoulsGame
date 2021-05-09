@@ -1,5 +1,8 @@
 package lsg.characters;
 
+import lsg.bags.Bag;
+import lsg.bags.Collectible;
+import lsg.bags.SmallBag;
 import lsg.consumables.Consumable;
 import lsg.consumables.drinks.Drink;
 import lsg.consumables.food.Food;
@@ -18,12 +21,17 @@ public abstract class Character {
     private final Dice dice = new Dice(101);
     private Weapon weapon;
     private Consumable consumable;
+    protected Bag bag;
 
     public static final String LIFE_STAT_STRING = "life :";
     public static  final String STAM_STAT_STRING = "stamina :";
     public static  final String BUFF_STAT_STRING = "buff :";
     public static  final String PROTECTION_STAT_STRING = "protection :";
 
+    public Character(String name){
+        setName(name);
+        bag = new SmallBag();
+    }
 
     public String getName() {
         return name;
@@ -123,6 +131,8 @@ public abstract class Character {
     protected abstract float computeProtection();
     protected abstract float computeBuff();
 
+    // consumables
+
     private void drink(Drink drink){
         System.out.println(name+" drinks " + drink.toString());
         int capacity = drink.use();
@@ -164,6 +174,91 @@ public abstract class Character {
 
     public void consume(){
         use(consumable);
+    }
+
+    // bags
+
+    public void pickUp(Collectible item){
+        bag.push(item);
+        System.out.println(getName() + " picks up " + item);
+    }
+
+    public Collectible pullOut(Collectible item){
+        if(bag.contains(item)){
+            bag.pop(item);
+            System.out.println(getName() + " pulls out " + item);
+            return item;
+        }
+        return null;
+    }
+
+    public void printBag(){
+        System.out.println("BAG : " + bag);
+    }
+
+    public int getBagCapacity(){
+        return bag.getCapacity();
+    }
+
+    public int getBagWeight(){
+        return bag.getWeight();
+    }
+
+    public void getBagItems(){
+        bag.getItems();
+    }
+
+    public Bag setBag(Bag bag){
+    Bag.transfer(this.bag,bag);
+    Bag old = this.bag;
+    System.out.println(getName() + " changes " + this.bag.getClass().getSimpleName() + " for " + bag.getClass().getSimpleName() );
+    this.bag = bag;
+    return old;
+    }
+
+    public void equip(Weapon weapon){
+        if(bag.contains(weapon)){
+            setWeapon(weapon);
+            pullOut(weapon);
+            System.out.println(" and equips it !");
+        }
+    }
+
+    public void equip(Consumable consumable){
+        if(bag.contains(consumable)){
+            setConsumable(consumable);
+            pullOut(consumable);
+            System.out.println(" and equips it !");
+        }
+    }
+
+    // fast: http://web.gregory-bourguin.fr/06%20Genericite.pdf
+
+    private Consumable fastUseFirst(Class<? extends Consumable> type){
+        for (Collectible item : bag.getItems()){
+            if(type.isInstance(item)){
+                Consumable cons = (Consumable) item;
+                use(cons);
+                if(cons.getCapacity()==0){
+                    pullOut(cons);
+                }
+                return cons;
+            }
+        }
+        return null;
+    }
+
+    public Drink fastDrink(){
+        System.out.println(getName() + " drinks FAST :");
+        return (Drink) fastUseFirst(Drink.class);
+    }
+    public Food fastFood(){
+        System.out.println(getName() + " eats FAST :");
+        return (Food) fastUseFirst(Food.class);
+    }
+    public RepairKit fastRepair(){
+        System.out.println(getName() + " repairs FAST :");
+        return (RepairKit) fastUseFirst(RepairKit.class);
     }
 
     @Override

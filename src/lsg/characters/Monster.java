@@ -8,8 +8,8 @@ public class Monster extends Character{
     private Talisman talisman;
 
     public Monster(String name) {
+        super(name);
         INSTANCES_COUNT++;
-        setName(name);
         setMaxStamina(10);
         setMaxLife(10);
         setStamina(this.getMaxStamina());

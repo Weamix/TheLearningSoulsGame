@@ -14,7 +14,7 @@ public class Hero extends Character{
     private final Ring[] rings;
 
     public Hero(String name) {
-        setName(name);
+        super(name);
         setMaxStamina(50);
         setMaxLife(100);
         setStamina(this.getMaxStamina());
@@ -106,6 +106,24 @@ public class Hero extends Character{
     @Override
     protected float computeBuff() {
         return getTotalRings();
+    }
+
+    // bags
+
+    public void equip(ArmorItem item, int slot){
+        if(bag.contains(item)){
+            setArmor(item, slot);
+            pullOut(item);
+            System.out.println(" and equips it !");
+        }
+    }
+
+    public void equip(Ring ring, int slot){
+        if(bag.contains(ring)){
+            setRing(ring, slot);
+            pullOut(ring);
+            System.out.println(" and equips it !");
+        }
     }
 
     public static void main(String[] args) {
