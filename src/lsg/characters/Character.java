@@ -53,7 +53,15 @@ public abstract class Character {
         return maxStamina;
     }
 
+    // weapon
+
     public Weapon getWeapon() { return weapon; }
+
+    public void setWeapon(Weapon w) { this.weapon = w; }
+
+    public void printWeapon(){
+        System.out.println("WEAPON : " + weapon);
+    }
 
     protected void setName(String name) {
         this.name = name;
@@ -81,8 +89,6 @@ public abstract class Character {
     protected void setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
     }
-
-    public void setWeapon(Weapon w) { this.weapon = w; }
 
     public Consumable getConsumable() {
         return consumable;

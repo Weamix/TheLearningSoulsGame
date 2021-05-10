@@ -39,13 +39,15 @@ public class Bag {
     public void push(Collectible item){
         if(getWeight()+item.getWeight()<=getCapacity()){
             items.add(item);
-            weight += item.getWeight();
+            //weight += item.getWeight();
+            setWeight(getWeight()+item.getWeight());
         }
     }
 
     public Collectible pop(Collectible item){
         if(contains(item)) {
-            weight -= item.getWeight();
+            //weight -= item.getWeight();
+            setWeight(getWeight()-item.getWeight());
             items.remove(item);
             return item;
         }

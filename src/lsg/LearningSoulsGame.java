@@ -22,6 +22,7 @@ import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
+import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -140,17 +141,21 @@ public class LearningSoulsGame {
 
         createExhaustedHero();
 
+        System.out.println();
         DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
         RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
         ShotGun shotGun = new ShotGun();
         hero.pickUp(dragonSlayerLeggings);
         hero.pickUp(ringedKnightArmor);
         hero.pickUp(shotGun);
+
+        System.out.println();
         hero.printBag();
 
         MediumBag mediumBag = new MediumBag();
 
         hero.setBag(mediumBag);
+        System.out.println();
         hero.printBag();
 
         Coffee coffee = new Coffee();
@@ -164,7 +169,29 @@ public class LearningSoulsGame {
         hero.pickUp(repairKit);
         hero.pickUp(repairKit1);
 
+        System.out.println();
         hero.printBag();
+
+        System.out.println("--- AVANT ---");
+        hero.printStats();
+        hero.armorToString();
+        hero.printWeapon();
+        hero.printBag();
+
+        System.out.println("--- ACTIONS ---");
+        hero.fastDrink();
+        hero.fastFood();
+        hero.equip(shotGun);
+        hero.equip(dragonSlayerLeggings,1 );
+        hero.fastRepair();
+
+        System.out.println();
+        System.out.println("--- APRES ---");
+        hero.printStats();
+        hero.armorToString();
+        hero.printWeapon();
+        hero.printBag();
+
     }
 
     private void createExhaustedHero(){
