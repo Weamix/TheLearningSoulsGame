@@ -4,6 +4,7 @@ import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
 import lsg.consumables.food.Hamburger;
+import lsg.exceptions.BagFullException;
 import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 
@@ -36,17 +37,16 @@ public class Bag {
         this.weight = weight;
     }
 
-    public void push(Collectible item){
+    public void push(Collectible item) throws BagFullException {
+        if(getWeight()+item.getWeight()>=getCapacity()) throw new BagFullException(this);
         if(getWeight()+item.getWeight()<=getCapacity()){
             items.add(item);
-            //weight += item.getWeight();
             setWeight(getWeight()+item.getWeight());
         }
     }
 
     public Collectible pop(Collectible item){
         if(contains(item)) {
-            //weight -= item.getWeight();
             setWeight(getWeight()-item.getWeight());
             items.remove(item);
             return item;
@@ -84,7 +84,10 @@ public class Bag {
         return bag.toString();
     }
 
-    public static void transfer(Bag from, Bag into){
+    public static void transfer(Bag from, Bag into) throws BagFullException {
+        if (from==null || into ==null){
+            return;
+        }
         Collectible[] tabItems = from.getItems();
         for (Collectible it : tabItems){
             into.push(it);
@@ -94,7 +97,7 @@ public class Bag {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BagFullException {
         BlackWitchVeil blackWitchVeil = new BlackWitchVeil();
         Hamburger hamburger = new Hamburger();
         Sword sword = new Sword();

@@ -18,7 +18,7 @@ public class MenuBestOfV1 {
         return m.toString();
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args){
         MenuBestOfV1 menu = new MenuBestOfV1();
         System.out.println(menu.toString());
     }

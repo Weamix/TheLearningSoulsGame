@@ -1,29 +1,17 @@
 package lsg;
 
-import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
-import lsg.armor.RingedKnightArmor;
-import lsg.bags.MediumBag;
+import lsg.buffs.rings.DragonSlayerRing;
 import lsg.buffs.rings.RingOfDeath;
-import lsg.buffs.rings.RingOfSwords;
-import lsg.buffs.talismans.Talisman;
+import lsg.buffs.talismans.MoonStone;
 import lsg.characters.Hero;
 import lsg.characters.Lycanthrope;
 import lsg.characters.Monster;
 import lsg.characters.Character;
-import lsg.consumables.Consumable;
-import lsg.consumables.MenuBestOfV4;
-import lsg.consumables.drinks.Coffee;
-import lsg.consumables.drinks.Whisky;
 import lsg.consumables.food.Hamburger;
-import lsg.consumables.repair.RepairKit;
-import lsg.weapons.Claw;
-import lsg.weapons.ShotGun;
+import lsg.exceptions.*;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
-
-import java.sql.SQLOutput;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class LearningSoulsGame {
@@ -34,17 +22,22 @@ public class LearningSoulsGame {
 
     private void refresh() {
         hero.printStats();
-        System.out.println(BULLET_POINT+hero.getWeapon().toString());
-        System.out.println(BULLET_POINT+hero.getConsumable().toString()+"\n");
+        hero.printArmor();
+        hero.printRings();
+        hero.printConsumable();
+        hero.printWeapon();
+        hero.printBag();
+        System.out.println();
         monster.printStats();
     }
 
-    private void fight1vs1(){
+    private void fight1vs1() throws WeaponNullException {
         Scanner scanner = new Scanner(System.in);
         refresh();
         Character attacker = this.hero;
         Character victim = this.monster;
         Character turn;
+        int damage;
         while(attacker.isAlive() && victim.isAlive()){
             System.out.println();
             if(attacker instanceof Hero){
@@ -54,15 +47,54 @@ public class LearningSoulsGame {
                     action = scanner.nextInt();
                 }
                 if(action ==2){
-                    attacker.consume();
+                    try{
+                        attacker.consume();
+                    }
+                    catch(ConsumeNullException e){
+                        System.out.println("IMPOSSIBLE ACTION : no consumable has beeen equiped !");
+                    }
+                    catch(ConsumeEmptyException e){
+                        System.out.println("ACTION HAS NO EFFECT :" + e.getConsumable() + " is empty !");
+                    } catch (ConsumeException e) {
+                        e.printStackTrace();
+                    }
                 } else{
-                    int damage = attacker.attack();
-                    System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+                    try{
+                        damage = attacker.attack();
+                        System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
+                    }catch (WeaponNullException e){
+                        damage = 0;
+                        System.out.println("WARNING : no weapon has been equiped !!!");
+                        System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), null, damage, victim.getHitWith(damage)));
+                    }
+                    catch(WeaponBrokenException e){
+                        damage = 0;
+                        System.out.println("WARNING : weapon is broken !!!");
+                        System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), null, damage, victim.getHitWith(damage)));
+                    }
+                    catch(StaminaEmptyException e){
+                        System.out.println("ACTION HAS NO EFFECT : no more stamina !!!");
+                    }
                 }
                 System.out.println();
             }
             else {
-                int damage = attacker.attack();
+                try{
+                    damage = attacker.attack();
+                }catch (WeaponNullException e){
+                    damage = 0;
+                    System.out.println("WARNING : no weapon has been equiped !!!");
+                    System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), null, damage, victim.getHitWith(damage)));
+                }
+                catch(WeaponBrokenException e){
+                    damage = 0;
+                    System.out.println("WARNING : weapon is broken !!!");
+                    System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), null, damage, victim.getHitWith(damage)));
+                }
+                catch(StaminaEmptyException e){
+                    damage = 0;
+                    System.out.println("ACTION HAS NO EFFECT : no more stamina !!!");
+                }
                 System.out.println(String.format("%s attacks %s with %s (ATTACK:%d | DMG: %d)", attacker.getName(), victim.getName(), attacker.getWeapon().getName(), damage, victim.getHitWith(damage)));
             }
             refresh();
@@ -70,128 +102,21 @@ public class LearningSoulsGame {
             attacker=victim;
             victim=turn;
 
-            //Coffee coffee = new Coffee();
-            //attacker.use(coffee);
-
         }
         System.out.println(String.format("--- %s WINS !!! ---", (hero.isAlive() ? hero.getName() : monster.getName())));
     }
 
     private void init(){
         monster = new Monster();
+        monster = new Lycanthrope() ;
         hero = new Hero();
-        Hamburger hamburger = new Hamburger();
-        Weapon claw = new Claw();
-        Weapon sword = new Sword();
-        monster.setWeapon(claw);
-        hero.setWeapon(sword);
-        hero.setConsumable(hamburger);
-    }
+        hero.setWeapon(new Sword());
+        hero.setConsumable(new Hamburger());
+        hero.setArmor(new DragonSlayerLeggings(), 1);
+        hero.setRing(new RingOfDeath(), 1);
+        hero.setRing(new DragonSlayerRing(), 2);
 
-    private void play_v1(){
-        init();
-        fight1vs1();
-    }
-
-    private void play_v2(){
-        init();
-        BlackWitchVeil blackWitchVeil = new BlackWitchVeil();
-        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
-        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
-        hero.setArmor(blackWitchVeil,1);
-        hero.setArmor(ringedKnightArmor,2);
-        hero.setArmor(dragonSlayerLeggings,3);
-        fight1vs1();
-    }
-
-    private void play_v3(){
-        init();
-        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
-        hero.setArmor(ringedKnightArmor,2);
-        RingOfDeath ringOfDeath = new RingOfDeath();
-        hero.setRing(ringOfDeath,1);
-        RingOfSwords ringOfSwords = new RingOfSwords();
-        hero.setRing(ringOfSwords,2);
-        monster = new Lycanthrope();
-        Talisman talisman = new Talisman("Renault",20,1,2);
-        monster.setTalisman(talisman);
-        fight1vs1();
-    }
-
-    private void test_bag(){
-        /*Hero hero = new Hero();
-        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
-        hero.pickUp(dragonSlayerLeggings);
-
-        Hamburger hamburger = new Hamburger();
-        hero.pickUp(hamburger);
-        hero.pullOut(hamburger);
-
-        ShotGun shotGun = new ShotGun();
-        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
-        hero.pickUp(shotGun);
-        hero.pickUp(ringedKnightArmor);
-        hero.printBag();
-
-        MediumBag mediumBag = new MediumBag();
-        hero.setBag(mediumBag);
-
-        hero.equip(shotGun);
-        hero.equip(dragonSlayerLeggings,2);*/
-
-        createExhaustedHero();
-
-        System.out.println();
-        DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
-        RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
-        ShotGun shotGun = new ShotGun();
-        hero.pickUp(dragonSlayerLeggings);
-        hero.pickUp(ringedKnightArmor);
-        hero.pickUp(shotGun);
-
-        System.out.println();
-        hero.printBag();
-
-        MediumBag mediumBag = new MediumBag();
-
-        hero.setBag(mediumBag);
-        System.out.println();
-        hero.printBag();
-
-        Coffee coffee = new Coffee();
-        Hamburger hamburger = new Hamburger();
-        Whisky whisky = new Whisky();
-        RepairKit repairKit = new RepairKit();
-        RepairKit repairKit1 = new RepairKit();
-        hero.pickUp(coffee);
-        hero.pickUp(hamburger);
-        hero.pickUp(whisky);
-        hero.pickUp(repairKit);
-        hero.pickUp(repairKit1);
-
-        System.out.println();
-        hero.printBag();
-
-        System.out.println("--- AVANT ---");
-        hero.printStats();
-        hero.armorToString();
-        hero.printWeapon();
-        hero.printBag();
-
-        System.out.println("--- ACTIONS ---");
-        hero.fastDrink();
-        hero.fastFood();
-        hero.equip(shotGun);
-        hero.equip(dragonSlayerLeggings,1 );
-        hero.fastRepair();
-
-        System.out.println();
-        System.out.println("--- APRES ---");
-        hero.printStats();
-        hero.armorToString();
-        hero.printWeapon();
-        hero.printBag();
-
+        monster.setTalisman(new MoonStone());
     }
 
     private void createExhaustedHero(){
@@ -199,87 +124,29 @@ public class LearningSoulsGame {
         hero.getHitWith(99);
         Weapon grosseArme = new Weapon("Grosse arme",0,0,1000,100);
         hero.setWeapon(grosseArme);
-        hero.attack();
+        try {
+            hero.attack();
+        } catch (WeaponNullException | WeaponBrokenException | StaminaEmptyException e) {
+            e.printStackTrace();
+        }
         System.out.println("Created exhausted hero : ");
         hero.printStats();
-
     }
 
-    private void aTable(){
-        Hero h = new Hero();
-        Weapon grosseArme = new Weapon("Grosse arme",0,0,1000,100);
-        h.setWeapon(grosseArme);
-        MenuBestOfV4 menuBestOfV4 = new MenuBestOfV4();
-        Iterator it = menuBestOfV4.iterator();
-        while (it.hasNext()){
-            Consumable consumable = (Consumable) it.next();
-            h.use(consumable);
-            System.out.println(h.toString());
-            System.out.println("Apres utilisation : "+consumable.toString());
+    private void testExceptions() {
+        Weapon weapon = new Weapon("pelle",0,0,0,0);
+        hero.setWeapon(weapon);
+        try {
+            fight1vs1();
+        } catch (WeaponNullException e) {
+            e.printStackTrace();
         }
-        System.out.println(h.getWeapon().toString());
     }
 
     public static void main(String[] args) {
-        Hero h = new Hero();
-        h.printStats();
-        /*System.out.println(h); //appel toString par défaut
-        Hero h2 = new Hero("Marionapator");
-        h2.printStats();
-        for (int i=0;i<=5;i++){
-            Monster m = new Monster();
-            m.printStats();
-        }*/
-
-        /*System.out.print("----------------------------------------------------------------------------------------\n");
-        Weapon sword = new Sword();
-        while(h.getStamina() > 0){
-            h.printStats();
-            h.setWeapon(sword);
-            int damage = h.attack();
-            System.out.println("attaque avec "+ sword.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
-        }
-        if (h.isAlive()){
-            h.printStats();
-        }
-
-        System.out.print("----------------------------------------------------------------------------------------\n");
-
-        Monster m3 = new Monster();
-        while(m3.getStamina() > 0){
-            m3.printStats();
-            m3.setWeapon(sword);
-            int damage = m3.attack();
-            System.out.println("attaque avec "+ sword.getName() +" (min:"+ sword.getMinDamage()+ " max: " + sword.getMaxDamage() + " stam:" + sword.getStamCost() + " dur:"+ sword.getDurability()+") > "+ damage);
-        }
-        if (m3.getStamina() == 0){
-            m3.printStats();
-        }
-
-        System.out.print("----------------------------------------------------------------------------------------\n");
-
-        Hero rick = new Hero("Rick");
-        Monster zombie = new Monster("Zombie");
-        Weapon shotgun = new ShotGun();
-        rick.setWeapon(shotgun);
-        while(zombie.isAlive() && rick.getStamina() > 0){
-            rick.printStats();
-            zombie.printStats();
-            int damage = rick.attack();
-            System.out.println("!!!" +rick.getName()+" attack " +zombie.getName()+" with " +rick.getWeapon().getName()+" (" + damage +") !!! -> Effective DMG:000" +zombie.getHitWith(damage)+"PV");
-        }
-        if (!zombie.isAlive()){
-            rick.printStats();
-            zombie.printStats();
-        }*/
-
         System.out.print("---------------------------------------- THE LEARNING SOULS GAME ---------------------------------------- \n");
         LearningSoulsGame game = new LearningSoulsGame();
-        //game.play_v1();
-        //game.play_v2();
-        //game.play_v3();
-        //game.createExhaustedHero();
-        //game.aTable();
-        game.test_bag();
+        game.init();
+        game.testExceptions();
     }
 }

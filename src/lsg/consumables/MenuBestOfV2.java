@@ -32,7 +32,7 @@ public class MenuBestOfV2 {
         return m.toString();
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args){
         MenuBestOfV2 menu = new MenuBestOfV2();
         System.out.println(menu.toString());
     }

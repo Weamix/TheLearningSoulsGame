@@ -5,6 +5,7 @@ import lsg.armor.BlackWitchVeil;
 import lsg.armor.RingedKnightArmor;
 import lsg.buffs.rings.Ring;
 import lsg.buffs.rings.RingOfSwords;
+import lsg.exceptions.NoBagException;
 
 public class Hero extends Character{
 
@@ -70,6 +71,10 @@ public class Hero extends Character{
         return ArmorItemsUsed;
     }
 
+    public void printArmor(){
+        System.out.println(armorToString());
+    }
+
     // rings
     public void setRing(Ring ring, int slot) {
         if (slot>=1 && slot<=MAX_RINGS){
@@ -89,11 +94,19 @@ public class Hero extends Character{
     }
 
     public String ringToString() {
-        StringBuilder s = new StringBuilder("RINGS ");
+        StringBuilder s = new StringBuilder("RINGS :");
         for(int i = 0; i<MAX_RINGS; i++){
             s.append(String.format(" %s:%s ", i+1, rings[i]!=null ? rings[i].toString() : "empty"));
         }
         return s + "TOTAL :" + computeBuff();
+    }
+
+    public void printRings() {
+        StringBuilder s = new StringBuilder("RINGS :");
+        for(int i = 0; i<MAX_RINGS; i++){
+            s.append(String.format(" %s:%s ", i+1, rings[i]!=null ? rings[i].toString() : "empty"));
+        }
+        System.out.println(s);
     }
 
     // abstract character
@@ -110,7 +123,8 @@ public class Hero extends Character{
 
     // bags
 
-    public void equip(ArmorItem item, int slot){
+    public void equip(ArmorItem item, int slot) throws NoBagException {
+        if(bag==null) throw new NoBagException();
         if(bag.contains(item)){
             setArmor(item, slot);
             pullOut(item);
@@ -118,7 +132,8 @@ public class Hero extends Character{
         }
     }
 
-    public void equip(Ring ring, int slot){
+    public void equip(Ring ring, int slot) throws NoBagException {
+        if(bag==null) throw new NoBagException();
         if(bag.contains(ring)){
             setRing(ring, slot);
             pullOut(ring);
