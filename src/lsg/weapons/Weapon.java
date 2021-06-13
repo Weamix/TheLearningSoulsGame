@@ -3,7 +3,6 @@ package lsg.weapons;
 import lsg.bags.Collectible;
 import lsg.consumables.repair.RepairKit;
 import lsg.exceptions.ConsumeNullException;
-import lsg.exceptions.WeaponNullException;
 
 public class Weapon implements Collectible {
     private String name;

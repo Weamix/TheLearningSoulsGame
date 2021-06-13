@@ -70,6 +70,19 @@ public class Bag {
         return tabItems;
     }
 
+    public static void transfer(Bag from, Bag into) throws BagFullException {
+        if (from==null || into ==null){
+            return;
+        }
+        Collectible[] tabItems = from.getItems();
+        for (Collectible it : tabItems){
+            into.push(it);
+            if(into.contains(it)){
+                from.pop(it);
+            }
+        }
+    }
+
     public String toString(){
         StringBuilder bag = new StringBuilder(getClass().getSimpleName() + "[ " + items.size() + " items" +" | " + getWeight() + "/" + getCapacity() + " kg" + " ]");
         if(items.isEmpty()){
@@ -82,19 +95,6 @@ public class Bag {
             bag.append("\n");
         }
         return bag.toString();
-    }
-
-    public static void transfer(Bag from, Bag into) throws BagFullException {
-        if (from==null || into ==null){
-            return;
-        }
-        Collectible[] tabItems = from.getItems();
-        for (Collectible it : tabItems){
-            into.push(it);
-            if(into.contains(it)){
-                from.pop(it);
-            }
-        }
     }
 
     public static void main(String[] args) throws BagFullException {
