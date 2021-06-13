@@ -58,8 +58,6 @@ public class LearningSoulsGameApplication extends Application {
         /*                      childrens of root                      */
         root.getChildren().addAll(gameTitle);
         root.getChildren().addAll(creationPane);
-
-        //TODO : 5.4
     }
 
     private void addListeners() {
