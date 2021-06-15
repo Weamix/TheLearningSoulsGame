@@ -1,5 +1,6 @@
 package lsg.characters;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import lsg.bags.Bag;
 import lsg.bags.Collectible;
 import lsg.bags.SmallBag;
@@ -23,6 +24,8 @@ public abstract class Character {
     private Weapon weapon;
     private Consumable consumable;
     protected Bag bag;
+    private SimpleDoubleProperty lifeRate;
+    private SimpleDoubleProperty staminaRate;
 
     public static final String LIFE_STAT_STRING = "life :";
     public static  final String STAM_STAT_STRING = "stamina :";
@@ -32,6 +35,8 @@ public abstract class Character {
     public Character(String name){
         setName(name);
         bag = new SmallBag();
+        lifeRate = new SimpleDoubleProperty();
+        staminaRate = new SimpleDoubleProperty();
     }
 
     public String getName() {
@@ -74,10 +79,12 @@ public abstract class Character {
         }else{
             this.life = life;
         }
+        lifeRate.set((double)getLife() / getMaxLife());
     }
 
     protected void setMaxLife(int maxLife) {
         this.maxLife = maxLife;
+        lifeRate.set((double)getLife() / getMaxLife());
     }
 
     protected void setStamina(int stamina) {
@@ -85,10 +92,20 @@ public abstract class Character {
             stamina=0;
         }
         this.stamina = stamina;
+        staminaRate.set((double)getStamina() / getMaxStamina());
     }
 
     protected void setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
+        staminaRate.set((double)getStamina() / getMaxStamina());
+    }
+
+    public SimpleDoubleProperty lifeRateProperty(){
+        return lifeRate;
+    }
+
+    public SimpleDoubleProperty staminaRateProperty(){
+        return staminaRate;
     }
 
     //consumable

@@ -29,11 +29,10 @@ public class CreationPane extends VBox {
     public void fadeIn (EventHandler<ActionEvent> finishedHandler) {
         FadeTransition ft = new FadeTransition();
 
-        ft.setDuration(Duration.millis(5000));
+        ft.setDuration(Duration.millis(3000));
         ft.setNode(this);
         ft.setFromValue(0.0);
         ft.setToValue(1.0);
-        ft.setCycleCount(1000);
         ft.setAutoReverse(true);
         ft.play();
     }
